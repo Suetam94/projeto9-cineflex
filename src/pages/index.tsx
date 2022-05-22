@@ -12,9 +12,10 @@ export default function Home({ data }: HomeProps) {
   return (
     <>
       <Head>
-        <title>Home | Cineflex</title>
+        <title>Filmes | Cineflex</title>
       </Head>
       <Main>
+        <h2>Selecione o filme</h2>
         <MoviesContainer>
           {data.map((movie, key) => {
             return (
