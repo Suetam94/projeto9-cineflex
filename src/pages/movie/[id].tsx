@@ -1,4 +1,5 @@
 import { useRouter } from "next/router";
+import Link from "next/link";
 import { MovieHourContainer, MovieSelectHourContainer } from "./styles";
 import Head from "next/head";
 import { api } from "../../services/api";
@@ -58,7 +59,17 @@ export default function Movie() {
                   </h4>
                   <div>
                     {date.showtimes.map((showtime) => {
-                      return <button key={showtime.id}>{showtime.name}</button>;
+                      return (
+                        <Link
+                          key={showtime.id}
+                          href={{
+                            pathname: "/session/[id]",
+                            query: { id: showtime.id },
+                          }}
+                        >
+                          <button>{showtime.name}</button>
+                        </Link>
+                      );
                     })}
                   </div>
                 </>
@@ -67,9 +78,9 @@ export default function Movie() {
           </MovieSelectHourContainer>
         </MovieHourContainer>
       ) : (
-          <MovieHourContainer>
-            <h2>Nenhum horário disponível</h2>
-          </MovieHourContainer>
+        <MovieHourContainer>
+          <h2>Nenhum horário disponível</h2>
+        </MovieHourContainer>
       )}
     </>
   );
