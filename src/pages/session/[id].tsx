@@ -12,11 +12,28 @@ import {
   SeatsSectionContainer,
 } from "./styles";
 import Link from "next/link";
+import { Footer } from "../../components/Footer";
 
 interface SeatProps {
   id: number;
   name: string;
   isAvailable: boolean;
+}
+
+interface Info {
+  movie: {
+    id: number;
+    title: string;
+    posterURL: string;
+    overview: string;
+    releaseDate: string;
+  };
+  name: string;
+  day: {
+    id: number;
+    weekday: string;
+    date: string;
+  };
 }
 
 export default function Session() {
@@ -38,6 +55,8 @@ export default function Session() {
 
     fetchData();
   }, [id]);
+
+  const info = JSON.parse(localStorage.getItem("seats")!);
 
   function handleSeatsSelection(e: Event) {
     const el: HTMLDivElement = e.target as HTMLDivElement;
@@ -82,6 +101,8 @@ export default function Session() {
       JSON.stringify([selectedSeats, name, cpf])
     );
   }
+
+  console.log(info);
 
   return (
     <>
@@ -144,6 +165,12 @@ export default function Session() {
             <button type="submit">Reservar assento(s)</button>
           </Link>
         </FormContainer>
+        <Footer
+          imgURL={info.movie.posterURL}
+          movieName={info.movie.title}
+          weekday={info.day.date}
+          hour={info.name}
+        />
       </SeatsGeneralContainer>
     </>
   );

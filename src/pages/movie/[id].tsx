@@ -4,6 +4,7 @@ import { MovieHourContainer, MovieSelectHourContainer } from "./styles";
 import Head from "next/head";
 import { api } from "../../services/api";
 import { useEffect, useState } from "react";
+import { Footer } from "../../components/Footer";
 
 interface ShowtimesProps {
   name: string;
@@ -77,6 +78,7 @@ export default function Movie() {
               );
             })}
           </MovieSelectHourContainer>
+          <Footer imgURL={dateInfo.posterURL} movieName={dateInfo.title} />
         </MovieHourContainer>
       ) : (
         <MovieHourContainer>
