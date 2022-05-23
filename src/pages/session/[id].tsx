@@ -1,14 +1,14 @@
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { api } from "../../services/api";
 
 import {
-  SeatsGeneralContainer,
-  SeatsSectionContainer,
+  FormContainer,
   Seat,
   SeatLegend,
+  SeatsGeneralContainer,
   SeatsLegendContainer,
-  FormContainer,
+  SeatsSectionContainer,
 } from "./styles";
 
 interface SeatProps {
@@ -21,7 +21,8 @@ export default function Session() {
   const router = useRouter();
   const { id } = router.query;
 
-  const [seats, setSeats] = useState([]);
+  const [seats, setSeats] = useState<Array<SeatProps>>([]);
+  const [selectedSeats, setSelectedSeats] = useState<Array<any>>([]);
 
   useEffect(() => {
     async function fetchData() {
@@ -33,6 +34,33 @@ export default function Session() {
     fetchData();
   }, [id]);
 
+  function handleSeatsSelection(e: Event) {
+    const el: HTMLDivElement = e.target as HTMLDivElement;
+
+    const isSeatAvailable = seats.find((seat) => seat.name === el.innerText);
+
+    const seatIsAlreadySelected = selectedSeats.findIndex(
+      (seat) => seat.name === el.innerText
+    );
+
+    if (seatIsAlreadySelected > -1) {
+      el.classList.toggle("selected");
+      const updatedSeats = selectedSeats;
+
+      updatedSeats.splice(seatIsAlreadySelected, 1);
+
+      setSelectedSeats(updatedSeats);
+      return;
+    }
+
+    if (isSeatAvailable) {
+      el.classList.toggle("selected");
+      setSelectedSeats([...selectedSeats, isSeatAvailable]);
+    }
+  }
+
+  function handleOnSubmitRequest(e: React.FormEvent) {}
+
   return (
     <SeatsGeneralContainer>
       <h2>Selecione o(s) assento(s)</h2>
@@ -42,6 +70,8 @@ export default function Session() {
             <Seat
               className={!seat.isAvailable ? "not-available" : ""}
               key={seat.id}
+              // @ts-ignore
+              onClick={(e: Event) => handleSeatsSelection(e)}
             >
               {seat.name}
             </Seat>
@@ -62,7 +92,7 @@ export default function Session() {
           <span>Indisponível</span>
         </div>
       </SeatsLegendContainer>
-      <FormContainer>
+      <FormContainer onSubmit={(e) => handleOnSubmitRequest(e)}>
         <label>
           Nome do comprador:
           <input type="text" placeholder={"Digite seu nome..."} />
