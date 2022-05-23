@@ -37,6 +37,7 @@ export default function Movie() {
       const { data } = await api.get(`/movies/${id}/showtimes`);
 
       setDateInfo(data);
+      localStorage.setItem("movieInfo", JSON.stringify(data));
     }
 
     fetchData();
