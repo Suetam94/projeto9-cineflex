@@ -56,7 +56,8 @@ export default function Session() {
     fetchData();
   }, [id]);
 
-  const info = JSON.parse(localStorage.getItem("seats")!);
+  const storagedInfo = localStorage.getItem("seats");
+  const info = storagedInfo && JSON.parse(storagedInfo);
 
   function handleSeatsSelection(e: Event) {
     const el: HTMLDivElement = e.target as HTMLDivElement;
