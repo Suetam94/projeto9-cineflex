@@ -23,6 +23,8 @@ export default function Session() {
 
   const [seats, setSeats] = useState<Array<SeatProps>>([]);
   const [selectedSeats, setSelectedSeats] = useState<Array<any>>([]);
+  const [name, setName] = useState("");
+  const [cpf, setCpf] = useState("");
 
   useEffect(() => {
     async function fetchData() {
@@ -59,7 +61,17 @@ export default function Session() {
     }
   }
 
-  function handleOnSubmitRequest(e: React.FormEvent) {}
+  async function handleOnSubmitRequest(e: React.FormEvent) {
+    e.preventDefault();
+
+    const seatsIds: Array<number> = selectedSeats.map((seat) => seat.id);
+
+    await api.post("/seats/book-many", {
+      ids: seatsIds,
+      name,
+      cpf,
+    });
+  }
 
   return (
     <SeatsGeneralContainer>
@@ -95,11 +107,23 @@ export default function Session() {
       <FormContainer onSubmit={(e) => handleOnSubmitRequest(e)}>
         <label>
           Nome do comprador:
-          <input type="text" placeholder={"Digite seu nome..."} />
+          <input
+            type="text"
+            placeholder={"Digite seu nome..."}
+            required
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
         </label>
         <label>
           CPF do comprador:
-          <input type="text" placeholder={"Digite seu CPF..."} />
+          <input
+            type="text"
+            placeholder={"Digite seu CPF..."}
+            required
+            value={cpf}
+            onChange={(e) => setCpf(e.target.value)}
+          />
         </label>
 
         <button type="submit">Reservar assento(s)</button>
