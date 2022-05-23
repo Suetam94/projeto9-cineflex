@@ -2,7 +2,14 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { api } from "../../services/api";
 
-import { SeatsGeneralContainer, SeatsSectionContainer, Seat } from "./styles";
+import {
+  SeatsGeneralContainer,
+  SeatsSectionContainer,
+  Seat,
+  SeatLegend,
+  SeatsLegendContainer,
+  FormContainer,
+} from "./styles";
 
 interface SeatProps {
   id: number;
@@ -41,6 +48,32 @@ export default function Session() {
           );
         })}
       </SeatsSectionContainer>
+      <SeatsLegendContainer>
+        <div>
+          <SeatLegend className={"selected"}></SeatLegend>
+          <span>Selecionado</span>
+        </div>
+        <div>
+          <SeatLegend></SeatLegend>
+          <span>Disponível</span>
+        </div>
+        <div>
+          <SeatLegend className={"not-available"}></SeatLegend>
+          <span>Indisponível</span>
+        </div>
+      </SeatsLegendContainer>
+      <FormContainer>
+        <label>
+          Nome do comprador:
+          <input type="text" placeholder={"Digite seu nome..."} />
+        </label>
+        <label>
+          CPF do comprador:
+          <input type="text" placeholder={"Digite seu CPF..."} />
+        </label>
+
+        <button type="submit">Reservar assento(s)</button>
+      </FormContainer>
     </SeatsGeneralContainer>
   );
 }
